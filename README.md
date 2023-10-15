@@ -25,5 +25,5 @@ As a Tech Lead, we need you to have a strong foundation and (preferrably) demons
 - **Systems Design:** You will need to have an understanding of how to design a Python script that coordinates several pieces of hardware.
 - **User Experience Design:** The ability to guide the team in creating a user-friendly system, possibly with a GUI.
 - **Hardware/Software Integration:** Familiarity with integrating software and hardware operations would be ideal.
-- **Interest in Research: **Though being interested in research is not required, it would be a plus.
+- **Interest in Research:** Though being interested in research is not required, it would be a plus.
 
