@@ -1,4 +1,4 @@
-# John-Forstad-Lab-Machinery-Controller
+# John-Frostad-Lab-Machinery-Controller
 
 ### What will you be building, and how will it be used?
 
