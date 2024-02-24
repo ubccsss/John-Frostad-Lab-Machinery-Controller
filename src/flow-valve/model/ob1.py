@@ -24,7 +24,7 @@ class Ob1FlowValveController(FlowValveController):
         return self
 
     def __exit__(self):
-
+        OB1_Destructor(self.instrument_id)
 
     def __str__(self):
         raise NotImplementedError("FlowValveController.__str__ is unimplemented")
