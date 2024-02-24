@@ -13,16 +13,26 @@ class ZoomWindow(QMainWindow):
         # filepath is the path to the image that we want to zoom in/out
         self.filepath = filepath
 
-        self.x = 250
-        self.y = 250
+        self.zoom_value = {
+            1:1.0, 
+            2:1.1, 
+            3:1.2, 
+            4:1.3, 
+            5:1.4, 
+            6:1.5, 
+            7:1.6, 
+            8:1.7, 
+            9:1.8, 
+            10:1.9
+        }
+
+        self.x = 0
+        self.y = 0
 
         #width and height of the window
         self.win_width = 500
         self.win_height = 500
-
-        self.scaled_width = self.win_width
-        self.scaled_height = self.win_height
-
+        self.rect_size = 0
         self.img_w = 0
         self.img_h = 0
 
@@ -38,6 +48,10 @@ class ZoomWindow(QMainWindow):
         self.image_label.setAlignment(Qt.AlignCenter)
         self.il_width = self.image_label.width()
         self.il_height = self.image_label.height()
+
+        self.scaled_width = self.il_width
+        self.scaled_height = self.il_height
+        print(str(self.il_width), " x ", str(self.il_height))
 
         #not working
         self.saveImgButton = QPushButton("Save Image")
@@ -56,7 +70,6 @@ class ZoomWindow(QMainWindow):
 
         # Initial zoom factor is set to 1.0
         self.zoom_factor = 1.0
-        self.prev_zoom_factor = 1.0
 
         # Layout
         layout = QVBoxLayout()
@@ -69,7 +82,6 @@ class ZoomWindow(QMainWindow):
         self.central_widget.setLayout(layout)
         
         self.pixmap = QPixmap()
-        self.pixmap_copy = QPixmap()
         self.scaled_pixmap = QPixmap()
 
         # Load and display the image
@@ -77,24 +89,31 @@ class ZoomWindow(QMainWindow):
 
     # update the image after initial loading, zooming in, moving image
     def update_image(self):
-        # trimmed_pixmap = self.pixmap_copy.scaled(QSize(int(self.pixmap_copy.width() * self.zoom_factor), int(self.pixmap_copy.height() * self.zoom_factor)))
-        # self.scaled_pixmap = trimmed_pixmap.copy(QRect(0,0,self.width, self.height))
-        # self.image_label.setPixmap(self.scaled_pixmap)
+        zoomed_width = int(self.pixmap.width() * self.zoom_factor)
+        zoomed_height = int(self.pixmap.height() * self.zoom_factor)
+        self.scaled_pixmap = self.pixmap.scaled(QSize(zoomed_width, zoomed_height))
         
-        rect_size = QRect(int(self.x), int(self.y), self.win_width, self.win_height)
-        zoomed_pixmap = self.pixmap.scaled(QSize(int(self.pixmap.width() * self.zoom_factor), int(self.pixmap.height() * self.zoom_factor)))
 
-        trimmed_pixmap = zoomed_pixmap.copy(rect_size)  # Store a copy of the original pixmap
-        print("x: " + str(self.x))
+        self.rect_size = QRect(int(self.x), int(self.y), self.il_width, self.il_height)
+        trimmed_pixmap = self.scaled_pixmap.copy(self.rect_size)  # Store a copy of the original pixmap
+        #print("x: " + str(self.x))
 
         self.image_label.setPixmap(trimmed_pixmap)
-
-        
+    
     #initial loading of the image to the qlabel as a qpixmap
     def load_image(self, filename):
         self.pixmap = QPixmap(filename)
         self.img_w = self.pixmap.width()
         self.img_h = self.pixmap.height()
+        
+        img_center_x = self.img_w / 2
+        img_center_y = self.img_h / 2
+
+        # Calculate the top-left corner coordinates of the QPixmap to ensure it's centered
+        self.x = int(img_center_x - self.scaled_width / 2)
+        self.y = int(img_center_y - self.scaled_height / 2)
+
+
         self.update_image()
     
     # check that the x doesn't exceed or go below the image width
@@ -108,6 +127,7 @@ class ZoomWindow(QMainWindow):
             print("w going over!")
             print("x: " + str(self.x) + "delta_x: " + str(delta_x) + "scaled_width: " + str(self.scaled_width) +  "img w: " + str(self.img_w))
             self.x = self.img_w - self.scaled_width
+            print("x: ", self.x)
     
     # check that the y doesn't exceed or go below the image height
     def check_set_y(self, delta_y):
@@ -115,7 +135,7 @@ class ZoomWindow(QMainWindow):
             self.y += delta_y
         elif self.y + delta_y < 0:
             self.y = 0
-        elif self.y + self.scaled_height > self.img_h: 
+        elif self.y + self.scaled_height + delta_y > self.img_h: 
             print("h going over!")
             self.y = self.img_h - self.scaled_height
 
@@ -132,18 +152,57 @@ class ZoomWindow(QMainWindow):
         self.update_image()
 
     def zoom_in(self):
-        self.zoom_factor += (1 /self.zoom_slider.value())
+        previous_zf = self.zoom_factor
+        self.zoom_factor = self.zoom_value[self.zoom_slider.value()]
 
-        #problem with this scaled_widtha nd height
-        self.scaled_width = self.il_width * (1/self.zoom_factor)
-        self.scaled_height = self.il_height  * (1/self.zoom_factor)
 
-        self.img_w = self.pixmap.width() * self.zoom_factor
-        self.img_h = self.pixmap.height() * self.zoom_factor
-       # print("sv: " + str(self.zoom_slider.value()))
-        #print("zf: " + str(self.zoom_factor))
+        #problem with this scaled_width and height
+        # self.scaled_width = self.il_width * (1/self.zoom_factor)
+        # self.scaled_height = self.il_height  * (1/self.zoom_factor)
+        self.scaled_width = self.il_width
+        self.scaled_height = self.il_height
+        print(str(self.il_width), " x ", str(self.il_height))
+        
+
+        self.img_w =  self.pixmap.width() * self.zoom_factor
+        self.img_h =  self.pixmap.height() * self.zoom_factor
+
+        # --------------
+
+        # Calculate the top-left corner coordinates of the QPixmap to ensure it's centered
+        diff_zf = self.zoom_factor / previous_zf
+        dist_center_x = self.il_width / 2
+        scaled_center_x = (self.x + dist_center_x) * diff_zf
+        print("self.x: ", str(self.x), " zf: ", str(self.zoom_factor), "scaled_center: ", scaled_center_x, "dist_center: ", str(dist_center_x))
+
+        self.x = scaled_center_x - dist_center_x
+
+        print("new_self.x: ", str(self.x))
+
+        dist_center_y = self.il_height / 2
+        scaled_center_y = (self.y + dist_center_y) * diff_zf
+        self.y = scaled_center_y - dist_center_y
+        # self.y = center_y - (self.il_width * self.zoom_factor) / 2
+
+        # --------------
+
+        self.check_set_zoom_x()
+        self.check_set_zoom_y()
 
         self.update_image()
+
+    def check_set_zoom_x(self):
+        if self.x + self.scaled_width > self.img_w:
+            self.x = self.img_w - self.scaled_width
+        elif self.x  <  0:
+            self.x = 0
+
+    
+    def check_set_zoom_y(self):
+        if self.y + self.scaled_height > self.img_h:
+            self.y = self.img_h - self.scaled_height
+        elif self.y < 0:
+            self.y = 0
 
     def mousePressEvent(self, event):
         if event.buttons() & Qt.LeftButton:
@@ -161,9 +220,10 @@ class ZoomWindow(QMainWindow):
         imageExt = '.jpg'
         imgTime = time.time()
         zoomed_imgName = str(folderName + r'zoomed_in_' + str(int(imgTime*1000)) + imageExt)
-        save_pixmap = self.scaled_pixmap.copy(QRect(int(self.x), int(self.y), self.width, self.height))
-        # self.image_label.setPixmap(self.scaled_pixmap)
-        save_pixmap.save(zoomed_imgName)
+
+        self.scaled_pixmap = self.scaled_pixmap.copy(self.rect_size)
+
+        self.scaled_pixmap.save(zoomed_imgName)
         print("image saved" + str(zoomed_imgName))
 
         
