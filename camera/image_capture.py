@@ -307,7 +307,6 @@ class ApplicationWindow(QtGui.QMainWindow, uic.loadUiType('image_capture.ui')[0]
         self.snapshotButton.clicked.connect(self.snapshot_clicked)
         self.recordButton.clicked.connect(self.start_recording)
         self.stopButton.clicked.connect(self.stop_recording)
-        self.cursorButton.setEnabled(self.change_cursor_visibility)
         self.zoomButton.clicked.connect(self.zoom_event)
         
         self.setFolderButton.setEnabled(True)
@@ -317,7 +316,6 @@ class ApplicationWindow(QtGui.QMainWindow, uic.loadUiType('image_capture.ui')[0]
         self.recordButton.setEnabled(False)
         self.stopButton.setEnabled(False)
         self.zoomButton.setEnabled(False)
-        self.cursorButton.setEnabled(False)
 
         
         self.frameRate.setPlainText('1')
@@ -333,10 +331,10 @@ class ApplicationWindow(QtGui.QMainWindow, uic.loadUiType('image_capture.ui')[0]
         self.recording = False
         self.snapshot = False
         self.showing_cursor = False
-        self.zoomed_imgName = ""
-
-        #is this code below needed?
         self.zoom = False
+
+        #path to the temp zoom image that will be set once the zoom button is pressed
+        self.zoomed_imgName = ""
         
         self.cam = Camera()
         self.cam.init()
@@ -344,14 +342,9 @@ class ApplicationWindow(QtGui.QMainWindow, uic.loadUiType('image_capture.ui')[0]
         self.capture_thread = threading.Thread(target=self.grab)          
     
     
-    #function for zoom window
+    #function for zoom event, grab() should manage the zoom window
     def zoom_event(self):
         self.zoom = True 
-        #img = self.grab() - unnecessary, threading should take care of?
-        self.zoom_window = ZoomWindow(self.zoomed_imgName)
-        self.zoom_window.show()
-        #checks if the window has been closed, deletes temp zoom photo if it is 
-        self.zoom_window.destroyed.connect(self.delete_zoomed_photo)
 
     def delete_zoomed_photo(self):
         if os.path.exists(self.zoom_img_Name):
@@ -390,7 +383,6 @@ class ApplicationWindow(QtGui.QMainWindow, uic.loadUiType('image_capture.ui')[0]
         if self.running:
             self.recordButton.setEnabled(True)
             self.snapshotButton.setEnabled(True)
-            self.cursorButton.setEnabled(True)
     
     
     def resetFolder(self):
@@ -402,7 +394,8 @@ class ApplicationWindow(QtGui.QMainWindow, uic.loadUiType('image_capture.ui')[0]
         self.resetFolderButton.setEnabled(False)
         self.recordButton.setEnabled(False)
         self.snapshotButton.setEnabled(False)
-        self.cursorButton.setEnabled(True)
+        self.zoomButton.setEnabled(False)
+
     
     
     def load_clicked(self):
@@ -414,7 +407,7 @@ class ApplicationWindow(QtGui.QMainWindow, uic.loadUiType('image_capture.ui')[0]
         self.loadButton.setEnabled(False)
         self.recordButton.setEnabled(True)
         self.snapshotButton.setEnabled(True)
-        self.cursorButton.setEnabled(True)
+        self.zoomButton.setEnabled(True)
         self.loadButton.setText('Camera is live')
         print('Camera loaded.')
     
@@ -435,6 +428,7 @@ class ApplicationWindow(QtGui.QMainWindow, uic.loadUiType('image_capture.ui')[0]
         self.stopButton.setEnabled(True)
         self.snapshotButton.setEnabled(False)
         self.resetFolderButton.setEnabled(False)
+        self.zoomButton.setEnabled(False)
         print('Recording started.')
     
     
@@ -447,6 +441,7 @@ class ApplicationWindow(QtGui.QMainWindow, uic.loadUiType('image_capture.ui')[0]
         self.recordButton.setEnabled(True)
         self.snapshotButton.setEnabled(True)
         self.resetFolderButton.setEnabled(True)
+        self.zoomButton.setEnabled(True)
         print('Recording stopped.')
     
     
@@ -508,10 +503,15 @@ class ApplicationWindow(QtGui.QMainWindow, uic.loadUiType('image_capture.ui')[0]
             
 
             if self.zoom:
-                #save temp image to file
+                #save temp zoom image to file
                 self.zoomed_imgName = str(self.folderName + r'/zoom_' + str(int(imgTime*1000)) + self.imageExt)
                 cv2.imwrite(self.zoomed_imgName,img.as_1d_image())
                 print('Zoomed In.')
+                self.zoom_window = ZoomWindow(self.zoomed_imgName)
+                self.zoom_window.show()
+                
+                #checks if the window has been closed, deletes temp zoom photo if it is 
+                self.zoom_window.destroyed.connect(self.delete_zoomed_photo)
                 self.zoom = False
             
             
