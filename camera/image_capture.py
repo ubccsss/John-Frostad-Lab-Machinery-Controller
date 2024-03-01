@@ -504,7 +504,7 @@ class ApplicationWindow(QtGui.QMainWindow, uic.loadUiType('image_capture.ui')[0]
 
             if self.zoom:
                 #save temp zoom image to file
-                self.zoomed_imgName = str(self.folderName + r'/zoom_' + str(int(imgTime*1000)) + self.imageExt)
+                self.zoomed_imgName = str(self.folderName + r'/zoom_temp_' + str(int(imgTime*1000)) + self.imageExt)
                 cv2.imwrite(self.zoomed_imgName,img.as_1d_image())
                 print('Zoomed In.')
                 self.zoom_window = ZoomWindow(self.zoomed_imgName)
