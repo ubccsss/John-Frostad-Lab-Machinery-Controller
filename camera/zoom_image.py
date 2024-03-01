@@ -26,6 +26,10 @@ class ZoomWindow(QMainWindow):
             10:4.6
         }
 
+        # signal for closing window 
+        self.closed = QtCore.pyqtSignal()
+
+
         # width and height of the window
         self.img_w = 0
         self.img_h = 0
@@ -213,10 +217,14 @@ class ZoomWindow(QMainWindow):
         self.scaled_pixmap.save(zoomed_imgName)
         print("image saved" + str(zoomed_imgName))
 
+    # Emits signal when closed. Signal then triggers erasing of temp zoom image
+    def closeWindow(self, event):
+        self.closed.emit()
+        event.accept()
         
 def main():
     app = QApplication(sys.argv)
-    window = ZoomWindow("/Users/pearl/Downloads/CSSSU_camera_python/Dooly.PNG")
+    window = ZoomWindow("./test_img.PNG")
     window.show()
     sys.exit(app.exec_())
 
