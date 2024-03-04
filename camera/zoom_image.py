@@ -208,10 +208,10 @@ class ZoomWindow(QMainWindow):
     # saves the zoomed image within the current directory
     # CHANGE pathing based on the computer
     def saveZoomedImg(self):
-        folderName = "./"
+        folderName = os.path.dirname(self.filepath)
         imageExt = '.jpg'
         imgTime = time.strftime("%H:%M:%S", time.gmtime())
-        zoomed_imgName = str(folderName + str(imgTime) +r'_zoomed' + imageExt)
+        zoomed_imgName = str(folderName + "/" + str(imgTime) +r'_zoomed' + imageExt)
 
         #save the scaled image
         self.scaled_pixmap.save(zoomed_imgName)
