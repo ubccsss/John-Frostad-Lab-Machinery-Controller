@@ -221,12 +221,3 @@ class ZoomWindow(QMainWindow):
     def closeWindow(self, event):
         self.closed.emit()
         event.accept()
-        
-def main():
-    app = QApplication(sys.argv)
-    window = ZoomWindow("./test_img.PNG")
-    window.show()
-    sys.exit(app.exec_())
-
-if __name__ == '__main__':
-    main()
