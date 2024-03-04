@@ -345,13 +345,36 @@ class ApplicationWindow(QtGui.QMainWindow, uic.loadUiType('image_capture.ui')[0]
     #function for zoom event, grab() should manage the zoom window
     def zoom_event(self):
         self.zoom = True 
+        #disable all buttons while self.zoom is True
+        self.savePath.setEnabled(False)
+        self.frameRate.setEnabled(False)
+        self.testDuration.setEnabled(False)
+        self.setFolderButton.setEnabled(False)
+        self.resetFolderButton.setEnabled(False)
+        self.recordButton.setEnabled(False)
+        self.snapshotButton.setEnabled(False)
+        self.zoomButton.setEnabled(False)
+        self.loadButton.setEnabled(False)
 
-    # delete the temporary zoomed photo and set self.zoom to False
+        
+
+    # set self.zoom to False and delete the temporary zoomed photo
     def delete_zoomed_photo(self):
+        self.zoom = False
         if os.path.exists(self.zoom_img_Name):
             os.remove(self.zoom_img_Name)
             print("Temporary zoomed image file has been deleted.")
-        self.zoom = False
+            
+        # enable all button functionality once zoom window is closed
+        self.savePath.setEnabled(True)
+        self.frameRate.setEnabled(True)
+        self.testDuration.setEnabled(True)
+        self.setFolderButton.setEnabled(True)
+        self.resetFolderButton.setEnabled(True)
+        self.recordButton.setEnabled(True)
+        self.snapshotButton.setEnabled(True)
+        self.zoomButton.setEnabled(True)
+        self.loadButton.setEnabled(True)
 
 
     def setFolder(self):
