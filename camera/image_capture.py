@@ -346,10 +346,12 @@ class ApplicationWindow(QtGui.QMainWindow, uic.loadUiType('image_capture.ui')[0]
     def zoom_event(self):
         self.zoom = True 
 
+    # delete the temporary zoomed photo and set self.zoom to False
     def delete_zoomed_photo(self):
         if os.path.exists(self.zoom_img_Name):
             os.remove(self.zoom_img_Name)
             print("Temporary zoomed image file has been deleted.")
+        self.zoom = False
 
 
     def setFolder(self):
@@ -512,7 +514,6 @@ class ApplicationWindow(QtGui.QMainWindow, uic.loadUiType('image_capture.ui')[0]
                 
                 #checks if the window has been closed, deletes temp zoom photo if it is 
                 self.zoom_window.destroyed.connect(self.delete_zoomed_photo)
-                self.zoom = False
             
             
             if self.currentTime > self.testDurationVal:
