@@ -408,6 +408,8 @@ class ApplicationWindow(QtGui.QMainWindow, uic.loadUiType('image_capture.ui')[0]
         if self.running:
             self.recordButton.setEnabled(True)
             self.snapshotButton.setEnabled(True)
+            self.zoomButton.setEnabled(True)
+
     
     
     def resetFolder(self):
