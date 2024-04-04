@@ -1,16 +1,26 @@
 # python script for launching a GUI to record sequences of images from an IDS camera
 
 # import python modules
-from PyQt5 import QtCore, QtGui, uic
+# from PyQt5 import QtCore, QtGui, uic
+# from pyueye import ueye
+from zoom_image import ZoomWindow
+# from PIL import Image
+# import sys
+# import cv2
+# import time
+# import threading
+# import os
+
 from pyueye import ueye
-from zoom_image.py import ZoomWindow
-from PIL import Image
 import sys
 import cv2
 import time
 import threading
-import os
-
+import ctypes
+from PyQt5.QtWidgets import QApplication, QGraphicsScene, QGraphicsView, QHBoxLayout, QMainWindow, QLabel, QVBoxLayout, QWidget, QPushButton, QSlider, QSizePolicy
+from PyQt5.QtGui import QPixmap, QImage
+from PyQt5 import QtCore, uic
+import ntpath
 
 def process_image(self, image_data):
     # reshape the image data as 1dimensional array
@@ -21,10 +31,10 @@ def process_image(self, image_data):
     image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
     
     # show the image with Qt
-    return QtGui.QImage(image.data,
+    return QImage(image.data,
                         image_data.mem_info.width,
                         image_data.mem_info.height,
-                        QtGui.QImage.Format_RGB888)
+                        QImage.Format_RGB888)
 
 
 def get_bits_per_pixel(color_mode):
@@ -238,20 +248,20 @@ class Camera:
         return format_list
 
 
-class OwnImageWidget(QtGui.QWidget):
+class OwnImageWidget(QWidget):
     
-    update_signal = QtCore.pyqtSignal(QtGui.QImage, name="update_signal") # signal: define a signal w name update_signal and that carrys a QIamge
+    update_signal = QtCore.pyqtSignal(QImage, name="update_signal") # signal: define a signal w name update_signal and that carrys a QIamge
 
     def __init__(self, parent=None):
         super(OwnImageWidget, self).__init__(parent)
 
         self.image = None
 
-        self.graphics_view = QtGui.QGraphicsView(self)
-        self.v_layout = QtGui.QVBoxLayout(self) #boxlayout as top level layer to parent
-        self.h_layout = QtGui.QHBoxLayout() # create box layout without assocaitions
+        self.graphics_view = QGraphicsView(self)
+        self.v_layout = QVBoxLayout(self) #boxlayout as top level layer to parent
+        self.h_layout = QHBoxLayout() # create box layout without assocaitions
         
-        self.scene = QtGui.QGraphicsScene()
+        self.scene = QGraphicsScene()
         self.graphics_view.setScene(self.scene)
         self.v_layout.addWidget(self.graphics_view) #sets the garphics_view to boxlayout
         
@@ -267,8 +277,8 @@ class OwnImageWidget(QtGui.QWidget):
     
     def draw_background(self, painter, rect):
         if self.image:
-            image = self.image.scaled(rect.width(), rect.height(), QtCore.Qt.KeepAspectRatio)
-            painter.drawImage(rect.x(), rect.y(), image)
+            image = self.image.scaled(int(rect.width()), int(rect.height()), QtCore.Qt.KeepAspectRatio)
+            painter.drawImage(int(rect.x()), int(rect.y()), image)
     
     def update_image(self, image):
         self.scene.update()
@@ -287,13 +297,13 @@ class OwnImageWidget(QtGui.QWidget):
     def add_processor(self, callback): # unused
         self.processors.append(callback)
 
-class ApplicationWindow(QtGui.QMainWindow, uic.loadUiType('image_capture.ui')[0]):
+class ApplicationWindow(QMainWindow, uic.loadUiType('image_capture.ui')[0]):
     
     def __init__(self, parent=None):
         """
         Initialize the instance of the GUI object.
         """
-        QtGui.QMainWindow.__init__(self, parent)
+        QMainWindow.__init__(self, parent)
         self.setupUi(self) 
         
         self.ImgWidget = OwnImageWidget(self.ImgWidget)
@@ -361,8 +371,8 @@ class ApplicationWindow(QtGui.QMainWindow, uic.loadUiType('image_capture.ui')[0]
     # set self.zoom to False and delete the temporary zoomed photo
     def delete_zoomed_photo(self):
         self.zoom = False
-        if os.path.exists(self.zoom_img_Name):
-            os.remove(self.zoom_img_Name)
+        if ntpath.path.exists(self.zoom_img_Name):
+            ntpath.remove(self.zoom_img_Name)
             print("Temporary zoomed image file has been deleted.")
             
         # enable all button functionality once zoom window is closed
@@ -408,8 +418,6 @@ class ApplicationWindow(QtGui.QMainWindow, uic.loadUiType('image_capture.ui')[0]
         if self.running:
             self.recordButton.setEnabled(True)
             self.snapshotButton.setEnabled(True)
-            self.zoomButton.setEnabled(True)
-
     
     
     def resetFolder(self):
@@ -531,6 +539,7 @@ class ApplicationWindow(QtGui.QMainWindow, uic.loadUiType('image_capture.ui')[0]
 
             if self.zoom:
                 #save temp zoom image to file
+                print("foldername: ", self.folderName)
                 self.zoomed_imgName = str(self.folderName + r'/zoom_temp_' + str(int(imgTime*1000)) + self.imageExt)
                 cv2.imwrite(self.zoomed_imgName,img.as_1d_image())
                 print('Zoomed In.')
@@ -546,7 +555,7 @@ class ApplicationWindow(QtGui.QMainWindow, uic.loadUiType('image_capture.ui')[0]
 
 
 def main():
-    app = QtGui.QApplication(sys.argv)
+    app = QApplication(sys.argv)
     form = ApplicationWindow(None)
     form.setWindowTitle('IDS Camera Image Capture Interface')
     form.show()
