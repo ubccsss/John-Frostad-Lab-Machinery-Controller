@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>782</width>
+    <width>2000</width>
     <height>690</height>
    </rect>
   </property>
@@ -19,7 +19,7 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>782</width>
+      <width>2000</width>
       <height>669</height>
      </rect>
     </property>
@@ -54,28 +54,10 @@
       <string>Load Camera</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="cursorButton">
+        <widget class="QPushButton" name="zoomButton">
      <property name="geometry">
       <rect>
-       <x>534</x>
-       <y>599</y>
-       <width>119</width>
-       <height>65</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>11</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Cursor</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="zoomButton">
-     <property name="geometry">
-      <rect>
-       <x>658</x>
+       <x>1000</x>
        <y>599</y>
        <width>119</width>
        <height>65</height>
@@ -90,7 +72,7 @@
       <string>Zoom</string>
      </property>
     </widget>
-    <!-- <widget class="QPushButton" name="recordButton">
+    <widget class="QPushButton" name="recordButton">
      <property name="geometry">
       <rect>
        <x>534</x>
@@ -125,7 +107,7 @@
      <property name="text">
       <string>Stop</string>
      </property>
-    </widget> -->
+    </widget>
     <widget class="QTextEdit" name="frameRateLabel">
      <property name="geometry">
       <rect>
