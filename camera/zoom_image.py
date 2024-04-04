@@ -2,8 +2,10 @@ import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QVBoxLayout, QWidget, QPushButton, QSlider, QSizePolicy
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt, QRect, QSize
+from PyQt5 import QtCore
 import time
 import os
+import ntpath
 
 class ZoomWindow(QMainWindow):
     def __init__(self, filepath):
@@ -208,10 +210,11 @@ class ZoomWindow(QMainWindow):
     # saves the zoomed image within the current directory
     # CHANGE pathing based on the computer
     def saveZoomedImg(self):
-        folderName = os.path.dirname(self.filepath)
+        folderName = ntpath.dirname(self.filepath).split()[0]
+        print("folder:" + folderName)
         imageExt = '.jpg'
         imgTime = time.strftime("%H:%M:%S", time.gmtime())
-        zoomed_imgName = str(folderName + "/" + str(imgTime) +r'_zoomed' + imageExt)
+        zoomed_imgName = str(folderName + "\zoomed_" + str(imgTime) + imageExt)
 
         #save the scaled image
         self.scaled_pixmap.save(zoomed_imgName)
@@ -221,3 +224,11 @@ class ZoomWindow(QMainWindow):
     def closeWindow(self, event):
         self.closed.emit()
         event.accept()
+def main():
+    app = QApplication(sys.argv)
+    window = ZoomWindow("C:\\Users\\nsjle\\OneDrive\\Desktop\\John-Frostad-Lab-Machinery-Controller-camera_zoom\\camera\\snapshot_1712193008111.jpg")
+    window.show()
+    sys.exit(app.exec_())
+
+if __name__ == '__main__':
+    main()
