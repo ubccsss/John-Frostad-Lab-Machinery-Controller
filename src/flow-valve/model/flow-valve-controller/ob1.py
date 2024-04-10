@@ -27,11 +27,19 @@ class Ob1FlowValveController(FlowValveController):
         OB1_Destructor(self.instrument_id)
 
     def __str__(self):
-        #raise NotImplementedError("FlowValveController.__str__ is unimplemented")
         return f"OB1 Controller {self.name}, ID: {self.instrument_id}"
 
+    def add_sensor(self, channel, sensor):
+        OB1_Add_Sensor(
+                channel,
+                sensor.get_type(),
+                1 if sensor.is_digital() else 0,  # fix magic constants
+                sensor.get_digital_caibration(),
+                sensor.get_digital_resolution(),
+                sensor.get_voltage()
+        )
+
     def get_pressure(self, channel):
-        #raise NotImplementedError("FlowValveController.get_pressure is unimplemented")
         pressure = c_double()
         # Assuming default calibration is loaded and calibration length is 1000
         error = OB1_Get_Press(self.instrument_id, channel, 1, byref(self.calib), byref(pressure), 1000)
@@ -40,7 +48,6 @@ class Ob1FlowValveController(FlowValveController):
         return pressure.value
 
     def set_pressure(self, channel, pressure):
-        #raise NotImplementedError("FlowValveController.set_pressure is unimplemented")
         error = OB1_Set_Press(self.instrument_id, channel, c_double(pressure), byref(self.calib), 1000)
         if error != 0:
             raise Exception(f"Set pressure failed with error code: {error}")

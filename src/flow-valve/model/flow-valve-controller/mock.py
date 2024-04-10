@@ -1,0 +1,2 @@
+class MockFlowValveController(FlowValveController):
+    pass
