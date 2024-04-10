@@ -17,6 +17,9 @@ class FlowValveController:
     def __str__(self):
         raise NotImplementedError("FlowValveController.__str__ is unimplemented")
 
+    def add_sensor(self, channel, sensor):
+        raise NotImplementedError("FlowValveController.add_sensor is unimplemented")
+
     def get_pressure(self, channel):
         raise NotImplementedError("FlowValveController.get_pressure is unimplemented")
 
