@@ -1,0 +1,480 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>20</y>
+      <width>61</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>File Path</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>20</y>
+      <width>411</width>
+      <height>21</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="comboBox">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>90</y>
+      <width>421</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>Z_regulator_type_none 0</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Z_regulator _type__0_200_mbar 1</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Z_regulator _type__0_2000_mbar 2</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Z_regulator _type__0_8000_mbar 3</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Z_regulator_type_m1000_1000_mbar 4</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Z_regulator_type_m1000_6000_mbar 5</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>90</y>
+      <width>121</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Z_regulator_type</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>130</y>
+      <width>111</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Z_sensor_type</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="comboBox_2">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>130</y>
+      <width>421</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>Z_sensor_type_none 0</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Z_sensor _type_Flow_1_5_muL_min 1</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Z_sensor _type_Flow_7_muL_min 2</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Z_sensor _type_Flow_50_muL_min 3</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Z_sensor _type_Flow_80_muL_min 4</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Z_sensor _type_Flow_1000_muL_min 5</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Z_sensor _type_Flow_5000_muL_min 6</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Z_sensor_type_Press_70_mbar 7</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Z_sensor _type_Press_340_mbar 8</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Z_sensor _type_Press_1_bar 9</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Z_sensor _type_Press_2_bar 10</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Z_sensor _type_Press_7_bar 11</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Z_sensor _type_Press_16_bar 12</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Z_sensor _type_Level 13</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Z_sensor_type_Custom 14</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QComboBox" name="comboBox_3">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>180</y>
+      <width>421</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>Z_Sensor_digit_analog_Analog 0</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Z_Sensor_digit_analog_Digital 1</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QComboBox" name="comboBox_4">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>220</y>
+      <width>421</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>Z_D_F_S_Resolution__9Bit 0</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Z_D_F_S_Resolution__10Bit 1</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Z_D_F_S_Resolution__11Bit 2</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Z_D_F_S_Resolution__12Bit 3</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Z_D_F_S_Resolution__13Bit 4</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Z_D_F_S_Resolution__14Bit 5</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Z_D_F_S_Resolution__15Bit 6</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Z_D_F_S_Resolution__16Bit 7</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QComboBox" name="comboBox_5">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>266</y>
+      <width>421</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>Z_Sensor_FSD_Calib_H2O 0</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Z_Sensor_FSD_Calib_IPA 1</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QLabel" name="label_4">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>180</y>
+      <width>151</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Z_Sensor_digit_analog</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_5">
+    <property name="geometry">
+     <rect>
+      <x>9</x>
+      <y>220</y>
+      <width>151</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Z_D_F_S_Resolution</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_6">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>270</y>
+      <width>151</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Z_Sensor_FSD_Calib</string>
+    </property>
+   </widget>
+   <widget class="Line" name="line">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>50</y>
+      <width>661</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="Line" name="line_2">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>310</y>
+      <width>661</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="radioButton">
+    <property name="geometry">
+     <rect>
+      <x>180</x>
+      <y>330</y>
+      <width>99</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Stream 1</string>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="radioButton_2">
+    <property name="geometry">
+     <rect>
+      <x>290</x>
+      <y>330</y>
+      <width>99</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Stream 2</string>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="radioButton_3">
+    <property name="geometry">
+     <rect>
+      <x>400</x>
+      <y>330</y>
+      <width>99</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Stream 3</string>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="radioButton_4">
+    <property name="geometry">
+     <rect>
+      <x>510</x>
+      <y>330</y>
+      <width>99</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Stream 4</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_7">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>330</y>
+      <width>121</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Valve Streams</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_8">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>450</y>
+      <width>101</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Live presseure</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit_2">
+    <property name="geometry">
+     <rect>
+      <x>180</x>
+      <y>450</y>
+      <width>113</width>
+      <height>21</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>450</x>
+      <y>380</y>
+      <width>141</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Subimt</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_9">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>60</y>
+      <width>81</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Sensors:</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>24</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
