@@ -20,7 +20,7 @@ import ctypes
 from PyQt5.QtWidgets import QApplication, QGraphicsScene, QGraphicsView, QHBoxLayout, QMainWindow, QLabel, QVBoxLayout, QWidget, QPushButton, QSlider, QSizePolicy
 from PyQt5.QtGui import QPixmap, QImage
 from PyQt5 import QtCore, uic
-import ntpath
+from pathlib import Path, PureWindowsPath
 
 def process_image(self, image_data):
     # reshape the image data as 1dimensional array
@@ -371,8 +371,10 @@ class ApplicationWindow(QMainWindow, uic.loadUiType('image_capture.ui')[0]):
     # set self.zoom to False and delete the temporary zoomed photo
     def delete_zoomed_photo(self):
         self.zoom = False
-        if ntpath.path.exists(self.zoomed_img_Name):
-            ntpath.remove(self.zoomed_img_Name)
+        file_path = Path(self.zoomed_img_Name)
+        if file_path.is_file():
+            pathlib.Path.unlink(self.zoomed_img_Name)
+            self.zoomed_img_Name = ""
             print("Temporary zoomed image file has been deleted.")
             
         # enable all button functionality once zoom window is closed
@@ -539,9 +541,10 @@ class ApplicationWindow(QMainWindow, uic.loadUiType('image_capture.ui')[0]):
 
             if self.zoom:
                 #save temp zoom image to file
+                temp_img = ImageData(self.cam.handle(), img_buffer)
                 print("foldername: ", self.folderName)
                 self.zoomed_img_Name = str(self.folderName + r'/zoom_temp_' + str(int(imgTime*1000)) + self.imageExt)
-                cv2.imwrite(self.zoomed_img_Name,img.as_1d_image())
+                cv2.imwrite(self.zoomed_img_Name, temp_img.as_1d_image())
                 print('Zoomed In.')
                 self.zoom_window = ZoomWindow(self.zoomed_img_Name)
                 self.zoom_window.show()
