@@ -1,16 +1,7 @@
 # python script for launching a GUI to record sequences of images from an IDS camera
 
 # import python modules
-# from PyQt5 import QtCore, QtGui, uic
-# from pyueye import ueye
 from zoom_image import ZoomWindow
-# from PIL import Image
-# import sys
-# import cv2
-# import time
-# import threading
-# import os
-
 from pyueye import ueye
 import sys
 import cv2
