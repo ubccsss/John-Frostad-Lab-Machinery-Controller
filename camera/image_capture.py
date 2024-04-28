@@ -1,6 +1,7 @@
 # python script for launching a GUI to record sequences of images from an IDS camera
 
 # import python modules
+import pathlib
 from zoom_image import ZoomWindow
 from pyueye import ueye
 import sys
@@ -287,6 +288,7 @@ class OwnImageWidget(QWidget):
     
     def add_processor(self, callback): # unused
         self.processors.append(callback)
+        
 
 class ApplicationWindow(QMainWindow, uic.loadUiType('image_capture.ui')[0]):
     
@@ -339,7 +341,11 @@ class ApplicationWindow(QMainWindow, uic.loadUiType('image_capture.ui')[0]):
         
         self.cam = Camera()
         self.cam.init()
+
+        #set up signal to open zoom window when prompted
+        QtCore.pyqtSignal.signal.zoom_signal.connect(self.openZoomWindow)
         
+        #start threading
         self.capture_thread = threading.Thread(target=self.grab)          
     
     
@@ -356,6 +362,17 @@ class ApplicationWindow(QMainWindow, uic.loadUiType('image_capture.ui')[0]):
         self.snapshotButton.setEnabled(False)
         self.zoomButton.setEnabled(False)
         self.loadButton.setEnabled(False)
+
+    #open the zoom window in the main thread
+    def openZoomWindow(self):
+        print('testing zoom...')
+        #opens zoom window
+        zoom_app = QApplication(sys.argv)
+        self.zoom_window = ZoomWindow(self.zoomed_img_Name)
+        self.zoom_window.show()
+
+        #checks if the window has been closed, deletes temp zoom photo if it is 
+        self.zoom_window.destroyed.connect(self.delete_zoomed_photo)
 
         
 
@@ -443,10 +460,6 @@ class ApplicationWindow(QMainWindow, uic.loadUiType('image_capture.ui')[0]):
     def snapshot_clicked(self):
         #Take a snapshot.
         self.snapshot = True
-
-
-
-    
     
     def start_recording(self):
         #Start saving images in set folder, at set frequency, for set time.
@@ -458,7 +471,6 @@ class ApplicationWindow(QMainWindow, uic.loadUiType('image_capture.ui')[0]):
         self.resetFolderButton.setEnabled(False)
         self.zoomButton.setEnabled(False)
         print('Recording started.')
-    
     
     def stop_recording(self):
         #Stop recording.
@@ -472,14 +484,12 @@ class ApplicationWindow(QMainWindow, uic.loadUiType('image_capture.ui')[0]):
         self.zoomButton.setEnabled(True)
         print('Recording stopped.')
     
-    
     def closeEvent(self, event):
         #Close out camera if window closed.
         if self.running:
             self.running = False
             time.sleep(.5)
             self.cam.exit()
-    
     
     def grab(self):
         #Grabs camera image.
@@ -529,20 +539,13 @@ class ApplicationWindow(QMainWindow, uic.loadUiType('image_capture.ui')[0]):
                 print('Snapshot Taken.')
                 self.snapshot = False
             
-
             if self.zoom:
                 #save temp zoom image to file
                 temp_img = ImageData(self.cam.handle(), img_buffer)
                 print("foldername: ", self.folderName)
                 self.zoomed_img_Name = str(self.folderName + r'/zoom_temp_' + str(int(imgTime*1000)) + self.imageExt)
                 cv2.imwrite(self.zoomed_img_Name, temp_img.as_1d_image())
-                print('Zoomed In.')
-                self.zoom_window = ZoomWindow(self.zoomed_img_Name)
-                self.zoom_window.show()
-                
-                #checks if the window has been closed, deletes temp zoom photo if it is 
-                self.zoom_window.destroyed.connect(self.delete_zoomed_photo)
-            
+                QtCore.pyqtSignal.signal.zoom_signal.emit()
             
             if self.currentTime > self.testDurationVal:
                 self.stop_recording()
