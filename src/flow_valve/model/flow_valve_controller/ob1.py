@@ -20,6 +20,9 @@ class Ob1FlowValveController(FlowValveController):
         error = ElveflowDLL.OB1_Initialization(name_ascii_encoded, 0, 0, 0, 0, byref(instrument_id_ref))
         # ^ handle this
 
+        calib = (c_double * 1000)()
+        error = ElveflowDLL.Elveflow_Calibration_Load("", byref(calib), 1000)
+
         self.instrument_id = instrument_id_ref.value
         return self
 

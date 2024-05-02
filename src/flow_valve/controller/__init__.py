@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QTimer
+from PyQt5.QtCore import QTimer
 from ..view import FlowValveView
 from ..model.sensor.granular_sensor import GranularSensor
 
